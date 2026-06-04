@@ -75,6 +75,15 @@ export function parseProfileImport(rawJson: string): ProfileFieldData[] {
     throw new Error('JSON 内容必须是对象或字段数组');
   }
 
+  if ('schema' in parsed) {
+    if (parsed.schema !== PROFILE_EXPORT_SCHEMA) {
+      throw new Error('不支持的 schema');
+    }
+    if ('version' in parsed && parsed.version !== PROFILE_EXPORT_VERSION) {
+      throw new Error('不支持的版本');
+    }
+  }
+
   if ('fields' in parsed && !Array.isArray(parsed.fields)) {
     throw new Error('fields 必须是字段数组');
   }
